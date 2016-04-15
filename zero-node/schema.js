@@ -13,36 +13,15 @@ import {
   nodeDefinitions,
 } from 'graphql-relay';
 
-const BASE_URL = 'http://localhost:8000';
-
-function getJSONFromRelativeURL(relativeURL) {
-  return fetch(`${BASE_URL}${relativeURL}`)
-    .then(res => res.json());
-}
-
-function getPeople() {
-  return getJSONFromRelativeURL('/people/')
-    .then(json => json.people);
-}
-
-function getPerson(id) {
-  return getPersonByURL(`/people/${id}/`);
-}
-
-function getPersonByURL(relativeURL) {
-  return getJSONFromRelativeURL(relativeURL)
-    .then(json => json.person);
-}
-
 const {
   nodeField,
   nodeInterface,
 } = nodeDefinitions(
   // A method that maps from a global id to an object
-  (globalId) => {
+  (globalId, {loaders}) => {
     const {id, type} = fromGlobalId(globalId);
     if (type === 'Person') {
-      return getPersonPromiseById(id);
+      return loaders.person.load(id);
     }
   },
   // A method that maps from an object to a type
@@ -84,7 +63,8 @@ const PersonType = new GraphQLObjectType({
     friends: {
       type: new GraphQLList(PersonType),
       description: 'People who lent you money',
-      resolve: obj => obj.friends.map(getPersonByURL),
+      resolve: (obj, args, {loaders}) =>
+        loaders.person.loadManyByURL(obj.friends),
     },
   }),
   interfaces: [nodeInterface],
@@ -97,7 +77,7 @@ const QueryType = new GraphQLObjectType({
     allPeople: {
       type: new GraphQLList(PersonType),
       description: 'Everyone, everywhere',
-      resolve: () => getPeople(),
+      resolve: (root, args, {loaders}) => loaders.person.loadAll(),
     },
     node: nodeField,
     person: {
@@ -105,7 +85,7 @@ const QueryType = new GraphQLObjectType({
       args: {
         id: {type: new GraphQLNonNull(GraphQLID)},
       },
-      resolve: (root, args) => getPerson(args.id),
+      resolve: (root, args, {loaders}) => loaders.person.load(args.id),
     },
   }),
 });
