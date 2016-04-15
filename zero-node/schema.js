@@ -7,6 +7,11 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql';
+import {
+  fromGlobalId,
+  globalIdField,
+  nodeDefinitions,
+} from 'graphql-relay';
 
 const BASE_URL = 'http://localhost:8000';
 
@@ -29,11 +34,30 @@ function getPersonByURL(relativeURL) {
     .then(json => json.person);
 }
 
+const {
+  nodeField,
+  nodeInterface,
+} = nodeDefinitions(
+  // A method that maps from a global id to an object
+  (globalId) => {
+    const {id, type} = fromGlobalId(globalId);
+    if (type === 'Person') {
+      return getPersonPromiseById(id);
+    }
+  },
+  // A method that maps from an object to a type
+  (obj) => {
+    if (obj.hasOwnProperty('username')) {
+      return PersonType;
+    }
+  }
+);
+
 const PersonType = new GraphQLObjectType({
   name: 'Person',
   description: 'Somebody that you used to know',
   fields: () => ({
-    id: {type: GraphQLID},
+    id: globalIdField('Person'),
     firstName: {
       type: GraphQLString,
       description: 'What you yell at me',
@@ -63,6 +87,7 @@ const PersonType = new GraphQLObjectType({
       resolve: obj => obj.friends.map(getPersonByURL),
     },
   }),
+  interfaces: [nodeInterface],
 });
 
 const QueryType = new GraphQLObjectType({
@@ -74,6 +99,7 @@ const QueryType = new GraphQLObjectType({
       description: 'Everyone, everywhere',
       resolve: () => getPeople(),
     },
+    node: nodeField,
     person: {
       type: PersonType,
       args: {
