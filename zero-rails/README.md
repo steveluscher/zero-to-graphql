@@ -1,4 +1,4 @@
-# Rails
+# Rails example
 
 ## Prerequisites
 
