@@ -1,24 +1,33 @@
-## README
+# Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Prerequisites
 
-Things you may want to cover:
+* Ruby >=2.3.0
 
-* Ruby version
+    ```
+    # Install with RVM (https://rvm.io/rvm/install)
+    \curl -sSL https://get.rvm.io | bash -s stable --ruby=2.3
+    ```
 
-* System dependencies
+* Bundler >=1.11.2
 
-* Configuration
+    ```
+    # Install with `gem install`
+    gem install bundler
+    ```
 
-* Database creation
+## Installation
 
-* Database initialization
+    cd zero-rails
+    bundle
 
-* How to run the test suite
+## Seed the database
 
-* Services (job queues, cache servers, search engines, etc.)
+    rails db:migrate
+    rails db:seed
 
-* Deployment instructions
+## Running the example
 
-* ...
+    rails server
+
+Visit http://localhost:3000/graphiql
