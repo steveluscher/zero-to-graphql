@@ -35,11 +35,15 @@ Visit http://localhost:8000/graphiql
 
 ## Node
 
+### Prerequisites
+
+* Node >=4.2.3 (Download from https://nodejs.org/en/download/)
+
 ### Installation
 
     cd zero-node
     npm install
-    
+
 ### Running the example
 
     # Follow the instructions to start the Django server, then...
