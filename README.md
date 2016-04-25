@@ -2,6 +2,10 @@
 
 In this repository, you will find examples of GraphQL endpoints created using various languages atop different frameworks. The goal is to demonstrate how you might go about creating a GraphQL endpoint atop your *existing* infrastructure, whatever that may be, without having to rewrite your data model.
 
+## Watch the original presentation
+
+[![Zero to GraphQL in 30 Minutes &ndash; video](https://i.ytimg.com/vi/UBGzsb2UkeY/0.jpg)](https://youtu.be/UBGzsb2UkeY)
+
 ## The examples' data model
 
 Every example in this repository exposes a `Person` data model using an API considered idiomatic for the framework in question (eg. ActiveRecord for Rails). The type definition of the `Person` model looks like this:
