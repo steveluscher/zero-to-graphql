@@ -20,6 +20,8 @@ class Repository(db: Database) {
   def findFriends(personIds: Seq[String]) =
     db.run(friendsQuery(personIds).result).map(result ⇒
       result.groupBy(_._1.personId).mapValues(_.map(_._2)))
+
+  def close() = db.close()
 }
 
 object Repository {

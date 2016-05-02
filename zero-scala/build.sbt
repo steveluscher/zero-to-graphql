@@ -16,7 +16,10 @@ libraryDependencies ++= Seq(
   // Database
   "com.typesafe.slick" %% "slick" % "3.1.1",
   "com.h2database" % "h2" % "1.4.191",
-  "org.slf4j" % "slf4j-nop" % "1.7.21"
+  "org.slf4j" % "slf4j-nop" % "1.7.21",
+
+  // Testing
+  "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
 
 Revolver.settings
