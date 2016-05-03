@@ -10,8 +10,8 @@ libraryDependencies ++= Seq(
   "org.sangria-graphql" %% "sangria-spray-json" % "0.3.1",
 
   // Http
-  "com.typesafe.akka" %% "akka-http-experimental" % "2.4.2",
-  "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.4.2",
+  "com.typesafe.akka" %% "akka-http-experimental" % "2.4.4",
+  "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.4.4",
 
   // Database
   "com.typesafe.slick" %% "slick" % "3.1.1",
