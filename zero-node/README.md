@@ -13,7 +13,7 @@ The GraphQL schema in this example resolves data by fetching it via HTTP from th
 
 ## Running the example
 
-    # Follow the instructions to start the Django server, then...
+    # Follow the instructions to start the Node server, then...
     npm start
 
 Visit http://localhost:5000/graphiql
