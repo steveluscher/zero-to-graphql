@@ -151,6 +151,40 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     $ mix ecto.migrate
     ```
 
+12. add GraphQL to your `mix.exs` dependencies as follows:
+
+    ```
+    defp deps do
+      [
+        {:phoenix, "~> 1.2.0"},
+        {:phoenix_pubsub, "~> 1.0"},
+        {:ecto, github: "elixir-ecto/ecto", override: true },
+        {:phoenix_ecto, "~> 3.0"},
+        {:postgrex, ">= 0.0.0"},
+        {:phoenix_html, "~> 2.6"},
+        {:phoenix_live_reload, "~> 1.0", only: :dev},
+        {:gettext, "~> 0.11"},
+        {:cowboy, "~> 1.0"},
+        {:graphql, "~> 0.1.1"}
+     ]
+    end
+    ```
+
+13. Add GraphQL to your `mix.exs` applications as follows:
+
+    ```
+    def application do
+      [mod: {ZeroPhoenix, []},
+       applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :graphql]]
+    end
+    ```
+
+14. update our projects dependencies:
+
+    ```
+    $ mix deps.get
+    ```
+
 ## Production Setup
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
