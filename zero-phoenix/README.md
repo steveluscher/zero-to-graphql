@@ -42,82 +42,20 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     $ cd zero-phoenix
     ```
 
-4.  generate an API for representing our `Person` resource
+4.  update `username` and `password` database credentials within the following files:
+
+    ```
+    config/dev.exs
+    config/test.exs
+    ```
+
+5.  generate an API for representing our `Person` resource
 
     ```
     $ mix phoenix.gen.json Person people first_name:string last_name:string username:string email:string
     ```
 
-5.  add the resource to your api scope in `web/router.ex` which should look as follows after the edit:
-
-    ```
-    pipeline :api do
-      plug :accepts, ["json"]
-
-      resources "/people", PersonController, except: [:new, :edit]
-    end
-    ```
-
-    Note:  When creating an API, one doesn't require a new or edit actions.  Thus, this is the reason that we are excluding them from this resource.
-
-5.  update `username` and `password` database credentials within the following file:
-
-    ```
-    config/dev.exs
-    ```
-
-6.  create and migrate the database
-
-    ```
-    $ mix ecto.create
-    $ mix ecto.migrate
-    ```
-
-7.  generate a Friendship model which representing our join model:
-
-
-    ```
-    $ mix phoenix.gen.model Friendship friendships person_id:references:people friend_id:references:people
-    ```
-
-8.  change the generated model to look as follows:
-
-    `web/models/friendship.rb`:
-
-    ```
-    defmodule ZeroPhoenix.Friendship do
-      use ZeroPhoenix.Web, :model
-
-      @required_fields ~w(person_id friend_id)
-      @optional_fields ~w()
-
-      schema "friendships" do
-        belongs_to :person, ZeroPhoenix.Person
-        belongs_to :friend, ZeroPhoenix.Person
-
-        timestamps()
-      end
-
-      @doc """
-      Builds a changeset based on the `struct` and `params`.
-      """
-      def changeset(struct, params \\ %{}) do
-        struct
-        |> cast(params, [:person_id, :friend_id])
-        |> validate_required([:person_id, :friend_id])
-      end
-    end
-    ```
-
-    Note:  We want `friend_id` to reference the `people` table because our `friend_id` really represents a `Person` model.
-
-9.  migrate the database
-
-    ```
-    $ mix ecto.migrate
-    ```
-
-10. setup our model associations for the `Person` and `Friendship` models to look as follows:
+6.   replace the generated `Person` model with the following:
 
     `web/models/person.rb`:
 
@@ -149,6 +87,68 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
         |> validate_required([:first_name, :last_name, :username, :email])
       end
     end
+    ```
+
+7.  add the resource to your api scope in `web/router.ex` which should look as follows after the edit:
+
+    ```
+    scope "/api", ZeroPhoenix do
+      pipe_through :api
+
+      resources "/people", PersonController, except: [:new, :edit]
+    end
+    ```
+
+    Note:  When creating an API, one doesn't require a new or edit actions.  Thus, this is the reason that we are excluding them from this resource.
+
+8.  create and migrate the database
+
+    ```
+    $ mix ecto.create
+    $ mix ecto.migrate
+    ```
+
+9.  generate a `Friendship` model which representing our join model:
+
+    ```
+    $ mix phoenix.gen.model Friendship friendships person_id:references:people friend_id:references:people
+    ```
+
+10.  replace the generated `Friendship` model with the following:
+
+    `web/models/friendship.rb`:
+
+    ```
+    defmodule ZeroPhoenix.Friendship do
+      use ZeroPhoenix.Web, :model
+
+      @required_fields ~w(person_id friend_id)
+      @optional_fields ~w()
+
+      schema "friendships" do
+        belongs_to :person, ZeroPhoenix.Person
+        belongs_to :friend, ZeroPhoenix.Person
+
+        timestamps()
+      end
+
+      @doc """
+      Builds a changeset based on the `struct` and `params`.
+      """
+      def changeset(struct, params \\ %{}) do
+        struct
+        |> cast(params, [:person_id, :friend_id])
+        |> validate_required([:person_id, :friend_id])
+      end
+    end
+    ```
+
+    Note:  We want `friend_id` to reference the `people` table because our `friend_id` really represents a `Person` model.
+
+11.  migrate the database
+
+    ```
+    $ mix ecto.migrate
     ```
 
 ## Production Setup
