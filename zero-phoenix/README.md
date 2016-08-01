@@ -10,7 +10,7 @@
 
 - PostgreSQL 9.5.x or higher
 
-## Git Style Setup
+## Quick Installation
 
 To start your Phoenix app:
 
@@ -20,7 +20,7 @@ To start your Phoenix app:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Tutorial Style Setup
+## Tutorial Installation
 
 1.  create the project
 
@@ -42,7 +42,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     $ cd zero-phoenix
     ```
 
-4.  update `username` and `password` database credentials within the following files:
+4.  update `username` and `password` database credentials which appears at the bottom  of the following files:
 
     ```
     config/dev.exs
