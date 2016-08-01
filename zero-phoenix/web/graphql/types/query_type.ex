@@ -4,8 +4,6 @@ defmodule ZeroPhoenix.QueryType do
   alias ZeroPhoenix.PersonType
   alias ZeroPhoenix.Repo
 
-  # import Ecto.Query
-
   def type do
     %ObjectType{
       name: "QueryType",
