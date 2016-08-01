@@ -14,8 +14,11 @@
 # end
 
 defmodule ZeroPhoenix.PersonType do
-  alias ZeroPhoenix.PersonType
   alias GraphQL.Type.{ObjectType, List, NonNull, String}
+  alias ZeroPhoenix.PersonType
+  alias ZeroPhoenix.Repo
+  
+  import Ecto
 
   def type do
     %ObjectType{
@@ -37,7 +40,6 @@ defmodule ZeroPhoenix.PersonType do
   end
 
   def resolve(person, _args, _ctx) do
-    # person
-    # |> Repo.preload(friends)
+    Repo.all assoc(person, :friends)
   end
 end
