@@ -24,4 +24,9 @@ defmodule ZeroPhoenix.Router do
 
     resources "/people", PersonController, except: [:new, :edit]
   end
+
+  scope "/graphql" do
+    get  "/", GraphQL.Plug, schema: {ZeroPhoenix.GraphQLSchema, :schema}
+    post "/", GraphQL.Plug, schema: {ZeroPhoenix.GraphQLSchema, :schema}
+  end
 end
