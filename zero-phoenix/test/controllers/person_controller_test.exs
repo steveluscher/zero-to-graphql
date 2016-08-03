@@ -21,7 +21,7 @@ defmodule ZeroPhoenix.PersonControllerTest do
       "first_name" => person.first_name,
       "last_name" => person.last_name,
       "username" => person.username,
-      " email" => person. email}
+      "email" => person. email}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
