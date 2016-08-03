@@ -151,7 +151,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     $ mix ecto.migrate
     ```
 
-12. add `plug_graphql` package to your `mix.exs` dependencies as follows:
+12. add `absinthe` package to your `mix.exs` dependencies as follows:
 
     ```
     defp deps do
@@ -165,17 +165,17 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
         {:phoenix_live_reload, "~> 1.0", only: :dev},
         {:gettext, "~> 0.11"},
         {:cowboy, "~> 1.0"},
-        {:plug_graphql, "~> 0.3.1"}
+        {:absinthe, "~> 1.1.0"}
      ]
     end
     ```
 
-13. Add GraphQL to your `mix.exs` applications as follows:
+13. Add `absinthe` to your `mix.exs` applications as follows:
 
     ```
     def application do
       [mod: {ZeroPhoenix, []},
-       applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :graphql]]
+       applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :absinthe]]
     end
     ```
 
