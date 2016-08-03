@@ -170,7 +170,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     end
     ```
 
-13. Add `absinthe` to your `mix.exs` applications as follows:
+13. Add `absinthe` application to your `mix.exs` application as follows:
 
     ```
     def application do
