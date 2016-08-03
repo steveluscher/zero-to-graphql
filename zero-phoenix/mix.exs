@@ -17,9 +17,21 @@ defmodule ZeroPhoenix.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {ZeroPhoenix, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :plug_graphql]]
+    [
+      mod: {ZeroPhoenix, []},
+      applications:
+        [
+          :phoenix,
+          :phoenix_pubsub,
+          :phoenix_html,
+          :cowboy,
+          :logger,
+          :gettext,
+          :phoenix_ecto,
+          :postgrex,
+          :absinthe
+        ]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,7 +52,7 @@ defmodule ZeroPhoenix.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:plug_graphql, "~> 0.3.1"}
+      {:absinthe, "~> 1.1.0"}
    ]
   end
 
