@@ -29,7 +29,7 @@ defmodule ZeroPhoenix.Mixfile do
           :gettext,
           :phoenix_ecto,
           :postgrex,
-          :absinthe
+          :absinthe_plug
         ]
     ]
   end
@@ -52,7 +52,7 @@ defmodule ZeroPhoenix.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:absinthe, "~> 1.1.0"}
+      {:absinthe_plug, "~> 1.1"}
    ]
   end
 

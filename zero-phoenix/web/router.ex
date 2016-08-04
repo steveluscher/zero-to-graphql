@@ -28,11 +28,6 @@ defmodule ZeroPhoenix.Router do
   scope "/graphiql" do
     pipe_through :api
 
-    # option one
-    # forward "/", GraphQL.Plug, schema: {ZeroPhoenix.GraphQLSchema, :schema}
-
-    # option two
-    get  "/", GraphQL.Plug, schema: {ZeroPhoenix.GraphQLSchema, :schema}
-    post "/", GraphQL.Plug, schema: {ZeroPhoenix.GraphQLSchema, :schema}
+    forward "/", Absinthe.Plug.GraphiQL, schema: ZeroPhoenix.Graphql.Schema
   end
 end
