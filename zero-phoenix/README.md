@@ -207,7 +207,73 @@ The purpose of this example is to provide details as to how one would go about u
     $ mix ecto.migrate
     ```
 
-12. add `absinthe_plug` package to your `mix.exs` dependencies as follows:
+12. create the seeds file
+
+    `priv/repo/seeds.exs`:
+
+
+    ```
+    alias ZeroPhoenix.Repo
+    alias ZeroPhoenix.Person
+    alias ZeroPhoenix.Friendship
+
+    # reset the datastore
+    Repo.delete_all(Person)
+
+    # insert people
+    me = Repo.insert!(%Person{ first_name: "Steven", last_name: "Luscher", email: "steveluscher@fb.com", username: "steveluscher" })
+    dhh = Repo.insert!(%Person{ first_name: "David", last_name: "Heinemeier Hansson", email: "dhh@37signals.com", username: "dhh" })
+    ezra = Repo.insert!(%Person{ first_name: "Ezra", last_name: "Zygmuntowicz", email: "ezra@merbivore.com", username: "ezra" })
+    matz = Repo.insert!(%Person{ first_name: "Yukihiro", last_name: "Matsumoto", email: "matz@heroku.com", username: "matz" })
+
+    me
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: me.id, friend_id: matz.id } )
+    |> Repo.insert
+
+    dhh
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: dhh.id, friend_id: ezra.id } )
+    |> Repo.insert
+
+    dhh
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: dhh.id, friend_id: matz.id } )
+    |> Repo.insert
+
+    ezra
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: ezra.id, friend_id: dhh.id } )
+    |> Repo.insert
+
+    ezra
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: ezra.id, friend_id: matz.id } )
+    |> Repo.insert
+
+    matz
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: matz.id, friend_id: me.id } )
+    |> Repo.insert
+
+    matz
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: matz.id, friend_id: ezra.id } )
+    |> Repo.insert
+
+    matz
+    |> Ecto.build_assoc(:friendships)
+    |> Friendship.changeset( %{ person_id: matz.id, friend_id: dhh.id } )
+    |> Repo.insert
+    ```
+
+13. seed the database
+
+    ```
+    $ mix run priv/repo/seeds.exs
+    ```
+
+14. add `absinthe_plug` package to your `mix.exs` dependencies as follows:
 
     ```elixir
     defp deps do
@@ -226,7 +292,7 @@ The purpose of this example is to provide details as to how one would go about u
     end
     ```
 
-13. Add `absinthe_plug` application to your `mix.exs` application as follows:
+15. Add `absinthe_plug` application to your `mix.exs` application as follows:
 
     ```elixir
     def application do
@@ -235,13 +301,13 @@ The purpose of this example is to provide details as to how one would go about u
     end
     ```
 
-14. update our projects dependencies:
+16. update our projects dependencies:
 
     ```
     $ mix deps.get
     ```
 
-15. add the GraphQL schema which represents our entry point into our GraphQL structure:
+17. add the GraphQL schema which represents our entry point into our GraphQL structure:
 
     `web/graphql/schema.ex`:
 
@@ -267,7 +333,7 @@ The purpose of this example is to provide details as to how one would go about u
     end
     ```
 
-16. add our Person type which will be performing queries against:
+18. add our Person type which will be performing queries against:
 
     `web/graphql/types/person.ex`:
 
@@ -306,7 +372,7 @@ The purpose of this example is to provide details as to how one would go about u
     end
     ```
 
-17. add route for mounting the GraphiQL browser endpoint:
+19. add route for mounting the GraphiQL browser endpoint:
 
     ```
     scope "/graphiql" do
@@ -316,19 +382,19 @@ The purpose of this example is to provide details as to how one would go about u
     end
     ```
 
-18. start the server
+20. start the server
 
     ```
     $ mix phoenix.server
     ```
 
-19. navigate to our application within the browser
+21. navigate to our application within the browser
 
     ```
     $ open http://localhost:4000/graphiql
     ```
 
-20. enter and run GraphQL query
+22. enter and run GraphQL query
 
     ```
     {
