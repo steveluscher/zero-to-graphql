@@ -4,7 +4,6 @@ defmodule ZeroPhoenix.Graphql.Types.Person do
   import Ecto
 
   alias ZeroPhoenix.Repo
-  alias ZeroPhoenix.Friendship
 
   @desc "a person"
   object :person do
