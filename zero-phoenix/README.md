@@ -52,7 +52,7 @@
 
 6. enter and run GraphQL query
 
-    ```json
+    ```
     {
      person(id: "1") {
        firstName
@@ -329,7 +329,7 @@
 
 20. enter and run GraphQL query
 
-    ```json
+    ```
     {
       person(id: "1") {
         firstName
