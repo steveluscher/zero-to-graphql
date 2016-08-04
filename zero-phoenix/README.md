@@ -282,19 +282,19 @@ The purpose of this example is to provide details as to how one would go about u
       @desc "a person"
       object :person do
         @desc "unique identifier for the person"
-        field :id, :string
+        field :id, non_null(:string)
 
         @desc "first name of a person"
-        field :first_name, :string
+        field :first_name, non_null(:string)
 
         @desc "last name of a person"
-        field :last_name, :string
+        field :last_name, non_null(:string)
 
         @desc "username of a person"
-        field :username, :string
+        field :username, non_null(:string)
 
         @desc "email of a person"
-        field :email, :string
+        field :email, non_null(:string)
 
         @desc "a list of friends for our person"
         field :friends, list_of(:person) do
