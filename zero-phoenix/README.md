@@ -1,5 +1,7 @@
 # Phoenix Example
 
+The purpose of this example is to provide details as to how one would go about using GraphQL with the Phoenix Web Framework.  Thus, I have created two major sections which should be self explanatory: Quick Installation and Tutorial Installation.
+
 ## Getting Started
 
 ## Software requirements
@@ -276,7 +278,6 @@
       import Ecto
 
       alias ZeroPhoenix.Repo
-      alias ZeroPhoenix.Friendship
 
       @desc "a person"
       object :person do
