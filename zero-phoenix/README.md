@@ -378,4 +378,4 @@ ZeroPhoenix is released under the [MIT license](https://mit-license.org).
 
 ## Copyright
 
-copyright:: (c) Copyright 2015 Conrad Taylor. All Rights Reserved.
+copyright:: (c) Copyright 2016 Conrad Taylor. All Rights Reserved.
