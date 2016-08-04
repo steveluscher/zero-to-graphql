@@ -70,7 +70,7 @@
     ```
 
     Note:  The GraphQL query is responding with same response but different shape
-           within the GraphiQL browser because Elixir Maps performs no ordering on insertion.
+           within the GraphiQL browser because Elixir Maps perform no ordering on insertion.
 
 ## Tutorial Installation
 
@@ -347,7 +347,7 @@
     ```
 
     Note:  The GraphQL query is responding with same response but different shape
-           within the GraphiQL browser because Elixir Maps performs no ordering on insertion.
+           within the GraphiQL browser because Elixir Maps perform no ordering on insertion.
 
 ## Production Setup
 
