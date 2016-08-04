@@ -47,7 +47,7 @@
 5. navigate to our application within the browser
 
    ```
-   open http://localhost:4000/graphiql
+   $ open http://localhost:4000/graphiql
    ```
 
 6. enter and run GraphQL query
@@ -324,7 +324,7 @@
 19. navigate to our application within the browser
 
     ```
-    open http://localhost:4000/graphiql
+    $ open http://localhost:4000/graphiql
     ```
 
 20. enter and run GraphQL query
