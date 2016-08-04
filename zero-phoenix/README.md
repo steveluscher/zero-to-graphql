@@ -4,21 +4,73 @@
 
 ## Software requirements
 
-- Elixir 1.3.2 or higher
+- [Elixir 1.3.2 or higher](http://elixir-lang.org/install.html)
 
-- Phoenix 1.2.0 or higher
+- [Phoenix 1.2.0 or higher](http://www.phoenixframework.org/docs/installation)
 
 - PostgreSQL 9.5.x or higher
 
 ## Quick Installation
 
-To start your Phoenix app:
+1. clone this repository
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Start Phoenix endpoint with `mix phoenix.server`
+   ```
+   $ git clone git@github.com:steveluscher/zero-to-graphql.git
+   ```
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+2. change directory location
+
+   ```
+   $ cd /path/to/zero-phoenix
+   ```
+
+2. install dependencies
+
+   ```
+   $ mix deps.get
+   ```
+
+3. create, migrate, and seed the database
+
+   ```
+   $ mix ecto.create
+   $ mix ecto.migrate
+   $ mix ecto.seed
+   ```
+
+4. start the server
+
+   ```
+   $ mix phoenix.server
+   ```
+
+5. navigate to our application within the browser
+
+   ```
+   open http://localhost:4000/graphiql
+   ```
+
+6. enter and run GraphQL query
+
+    ```json
+    {
+     person(id: "1") {
+       firstName
+       lastName
+       username
+       email
+       friends {
+         firstName
+         lastName
+         username
+         email
+       }
+     }
+    }
+    ```
+
+    Note:  The GraphQL query is responding with same response but different shape
+           within the GraphiQL browser because Elixir Maps performs no ordering on insertion.
 
 ## Tutorial Installation
 
@@ -59,7 +111,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
     `web/models/person.rb`:
 
-    ```
+    ```elixir
     defmodule ZeroPhoenix.Person do
       use ZeroPhoenix.Web, :model
 
@@ -89,9 +141,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     end
     ```
 
-7.  add the resource to your api scope in `web/router.ex` which should look as follows after the edit:
+7.  add the resource to your api scope in which should look as follows after the edit:
 
-    ```
+    `web/router.ex`:
+
+    ```elixir
     scope "/api", ZeroPhoenix do
       pipe_through :api
 
@@ -118,7 +172,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
     `web/models/friendship.rb`:
 
-    ```
+    ```elixir
     defmodule ZeroPhoenix.Friendship do
       use ZeroPhoenix.Web, :model
 
@@ -151,9 +205,9 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     $ mix ecto.migrate
     ```
 
-12. add `absinthe` package to your `mix.exs` dependencies as follows:
+12. add `absinthe_plug` package to your `mix.exs` dependencies as follows:
 
-    ```
+    ```elixir
     defp deps do
       [
         {:phoenix, "~> 1.2.0"},
@@ -165,17 +219,17 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
         {:phoenix_live_reload, "~> 1.0", only: :dev},
         {:gettext, "~> 0.11"},
         {:cowboy, "~> 1.0"},
-        {:absinthe, "~> 1.1.0"}
+        {:absinthe_plug, "~> 1.1"}
      ]
     end
     ```
 
-13. Add `absinthe` application to your `mix.exs` application as follows:
+13. Add `absinthe_plug` application to your `mix.exs` application as follows:
 
-    ```
+    ```elixir
     def application do
       [mod: {ZeroPhoenix, []},
-       applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :absinthe]]
+       applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, absinthe_plug]]
     end
     ```
 
@@ -184,6 +238,116 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
     ```
     $ mix deps.get
     ```
+
+15. add the GraphQL schema which represents our entry point into our GraphQL structure:
+
+    `web/graphql/schema.ex`:
+
+    ```elixir
+    defmodule ZeroPhoenix.Graphql.Schema do
+      use Absinthe.Schema
+
+      import_types ZeroPhoenix.Graphql.Types.Person
+
+      alias ZeroPhoenix.Repo
+
+      query do
+        field :person, type: :person do
+          arg :id, non_null(:id)
+          resolve fn %{id: id}, _info ->
+            case ZeroPhoenix.Person|> Repo.get(id) do
+              nil  -> {:error, "Person id #{id} not found"}
+              person -> {:ok, person}
+            end
+          end
+        end
+      end
+    end
+    ```
+
+16. add our Person type which will be performing queries against:
+
+    `web/graphql/types/person.ex`:
+
+    ```elixir
+    defmodule ZeroPhoenix.Graphql.Types.Person do
+      use Absinthe.Schema.Notation
+
+      import Ecto
+
+      alias ZeroPhoenix.Repo
+      alias ZeroPhoenix.Friendship
+
+      @desc "a person"
+      object :person do
+        @desc "unique identifier for the person"
+        field :id, :string
+
+        @desc "first name of a person"
+        field :first_name, :string
+
+        @desc "last name of a person"
+        field :last_name, :string
+
+        @desc "username of a person"
+        field :username, :string
+
+        @desc "email of a person"
+        field :email, :string
+
+        @desc "a list of friends for our person"
+        field :friends, list_of(:person) do
+          resolve fn _, %{source: person} ->
+            {:ok, Repo.all(assoc(person, :friends))}
+          end
+        end
+      end
+    end
+    ```
+
+17. add route for mounting the GraphiQL browser endpoint:
+
+    ```
+    scope "/graphiql" do
+      pipe_through :api
+
+      forward "/", Absinthe.Plug.GraphiQL, schema: ZeroPhoenix.Graphql.Schema
+    end
+    ```
+
+18. start the server
+
+    ```
+    $ mix phoenix.server
+    ```
+
+19. navigate to our application within the browser
+
+    ```
+    open http://localhost:4000/graphiql
+    ```
+
+20. enter and run GraphQL query
+
+    ```json
+    {
+      person(id: "1") {
+        firstName
+        lastName
+        username
+        email
+        friends {
+          firstName
+          lastName
+          username
+          email
+        }
+      }
+    }
+    ```
+
+    Note:  The GraphQL query is responding with same response but different shape
+           within the GraphiQL browser because Elixir Maps performs no ordering on insertion.
 
 ## Production Setup
 
@@ -199,8 +363,8 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 ## GraphQL References
 
-  * Official website: http://graphql.org
-  * GraphQL in Elixir: http://graphql-elixir.org
+  * Official Website: http://graphql.org
+  * Absinthe GraphQL Elixir: http://absinthe-graphql.org
 
 ## Support
 
