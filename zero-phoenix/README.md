@@ -370,7 +370,7 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 Bug reports and feature requests can be filed with the rest for the Phoenix project here:
 
-* [File Bug Reports and Features](https://github.com/<user-name>/<project-repo>/issues)
+* [File Bug Reports and Features](https://github.com/steveluscher/zero-to-graphql/issues)
 
 ## License
 
