@@ -1,4 +1,4 @@
-# ZeroPhoenix
+# Phoenix Example
 
 ## Getting Started
 
