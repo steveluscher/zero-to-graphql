@@ -111,7 +111,7 @@ The purpose of this example is to provide details as to how one would go about u
 
 6.   replace the generated `Person` model with the following:
 
-    `web/models/person.rb`:
+    `web/models/person.ex`:
 
     ```elixir
     defmodule ZeroPhoenix.Person do
@@ -172,7 +172,7 @@ The purpose of this example is to provide details as to how one would go about u
 
 10.  replace the generated `Friendship` model with the following:
 
-    `web/models/friendship.rb`:
+    `web/models/friendship.ex`:
 
     ```elixir
     defmodule ZeroPhoenix.Friendship do
