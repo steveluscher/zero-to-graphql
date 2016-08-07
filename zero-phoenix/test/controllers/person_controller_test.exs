@@ -2,7 +2,7 @@ defmodule ZeroPhoenix.PersonControllerTest do
   use ZeroPhoenix.ConnCase
 
   alias ZeroPhoenix.Person
-  @valid_attrs %{" email": "some content", first_name: "some content", last_name: "some content", username: "some content"}
+  @valid_attrs %{"email": "some content", first_name: "some content", last_name: "some content", username: "some content"}
   @invalid_attrs %{}
 
   setup %{conn: conn} do
@@ -21,7 +21,7 @@ defmodule ZeroPhoenix.PersonControllerTest do
       "first_name" => person.first_name,
       "last_name" => person.last_name,
       "username" => person.username,
-      "email" => person. email}
+      "email" => person.email}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
