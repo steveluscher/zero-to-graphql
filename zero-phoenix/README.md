@@ -14,45 +14,45 @@ The purpose of this example is to provide details as to how one would go about u
 
 ## Quick Installation
 
-1. clone this repository
+1.  clone this repository
 
-   ```
-   $ git clone git@github.com:steveluscher/zero-to-graphql.git
-   ```
+    ```
+    $ git clone git@github.com:steveluscher/zero-to-graphql.git
+    ```
 
-2. change directory location
+2.  change directory location
 
-   ```
-   $ cd /path/to/zero-phoenix
-   ```
+    ```
+    $ cd /path/to/zero-phoenix
+    ```
 
-2. install dependencies
+2.  install dependencies
 
-   ```
-   $ mix deps.get
-   ```
+    ```
+    $ mix deps.get
+    ```
 
-3. create, migrate, and seed the database
+3.  create, migrate, and seed the database
 
-   ```
-   $ mix ecto.create
-   $ mix ecto.migrate
-   $ mix ecto.seed
-   ```
+    ```
+    $ mix ecto.create
+    $ mix ecto.migrate
+    $ mix ecto.seed
+    ```
 
-4. start the server
+4.  start the server
 
-   ```
-   $ mix phoenix.server
-   ```
+    ```
+    $ mix phoenix.server
+    ```
 
-5. navigate to our application within the browser
+5.  navigate to our application within the browser
 
-   ```
-   $ open http://localhost:4000/graphiql
-   ```
+    ```
+    $ open http://localhost:4000/graphiql
+    ```
 
-6. enter and run GraphQL query
+6.  enter and run GraphQL query
 
     ```
     {
@@ -109,7 +109,7 @@ The purpose of this example is to provide details as to how one would go about u
     $ mix phoenix.gen.json Person people first_name:string last_name:string username:string email:string
     ```
 
-6.   replace the generated `Person` model with the following:
+6.  replace the generated `Person` model with the following:
 
     `web/models/person.ex`:
 
@@ -170,7 +170,7 @@ The purpose of this example is to provide details as to how one would go about u
     $ mix phoenix.gen.model Friendship friendships person_id:references:people friend_id:references:people
     ```
 
-10.  replace the generated `Friendship` model with the following:
+10. replace the generated `Friendship` model with the following:
 
     `web/models/friendship.ex`:
 
@@ -201,7 +201,7 @@ The purpose of this example is to provide details as to how one would go about u
 
     Note:  We want `friend_id` to reference the `people` table because our `friend_id` really represents a `Person` model.
 
-11.  migrate the database
+11. migrate the database
 
     ```
     $ mix ecto.migrate
