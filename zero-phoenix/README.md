@@ -12,6 +12,14 @@ The purpose of this example is to provide details as to how one would go about u
 
 - PostgreSQL 9.5.x or higher
 
+## Communication
+
+- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graphql). (Tag 'graphql')
+- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graphql).
+- If you **found a bug**, open an issue.
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
+
 ## Quick Installation
 
 1.  clone this repository
