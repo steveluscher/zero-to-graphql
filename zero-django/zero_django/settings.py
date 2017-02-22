@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'people',
     'django_graphiql',
-    'graphene.contrib.django',
+    'graphene_django',
 ]
 
 MIDDLEWARE_CLASSES = [
