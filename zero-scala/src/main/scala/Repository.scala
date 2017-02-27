@@ -2,7 +2,7 @@ import language.postfixOps
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
-import slick.driver.H2Driver.api._
+import slick.jdbc.H2Profile.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class Person(id: String, firstName: String, lastName: String, username: String, email: String)

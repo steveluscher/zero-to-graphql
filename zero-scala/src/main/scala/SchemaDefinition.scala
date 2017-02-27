@@ -1,6 +1,8 @@
 import sangria.schema._
 import sangria.macros.derive._
-import scala.concurrent.ExecutionContext.Implicits.global
+import sangria.execution.deferred._
+
+import scala.concurrent.ExecutionContext
 
 object SchemaDefinition {
   case class FriendsDeferred(personId: String) extends Deferred[Seq[Person]]
@@ -9,7 +11,7 @@ object SchemaDefinition {
     Some((_: Ctx, _: Args, child: Double) ⇒ child + complexity)
 
   class FriendsResolver extends DeferredResolver[Repository] {
-    def resolve(deferred: Vector[Deferred[Any]], ctx: Repository) = {
+    def resolve(deferred: Vector[Deferred[Any]], ctx: Repository, queryState: Any)(implicit ec: ExecutionContext) = {
       val personIds = deferred.collect {case FriendsDeferred(personId) ⇒ personId}
       val friends = ctx.findFriends(personIds)
 
