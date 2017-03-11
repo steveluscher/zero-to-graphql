@@ -1,8 +1,8 @@
 import language.postfixOps
-
 import org.scalatest.{Matchers, WordSpec}
 import sangria.ast.Document
 import sangria.execution.Executor
+import sangria.execution.deferred.DeferredResolver
 import sangria.macros._
 import sangria.marshalling.sprayJson._
 import spray.json._
@@ -11,7 +11,7 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-import SchemaDefinition.FriendsResolver
+import SchemaDefinition.personFetcher
 
 class SchemaSpec extends WordSpec with Matchers {
   "Schema" should {
@@ -61,7 +61,7 @@ class SchemaSpec extends WordSpec with Matchers {
 
     try {
       val futureResult = Executor.execute(SchemaDefinition.schema, query, repository,
-        deferredResolver = new FriendsResolver)
+        deferredResolver = DeferredResolver.fetchers(personFetcher))
 
       Await.result(futureResult, 10 seconds)
     } finally repository.close()

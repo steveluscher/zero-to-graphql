@@ -1,12 +1,12 @@
 name := "zero-to-graphql"
 description := "An examples of GraphQL endpoint created using sangria and akka-http"
 
-scalaVersion := "2.12.0"
+scalaVersion := "2.12.1"
 scalacOptions ++= Seq("-deprecation", "-feature")
 
 libraryDependencies ++= Seq(
   // GraphQL
-  "org.sangria-graphql" %% "sangria" % "1.0.0",
+  "org.sangria-graphql" %% "sangria" % "1.1.0",
   "org.sangria-graphql" %% "sangria-spray-json" % "1.0.0",
 
   // Http

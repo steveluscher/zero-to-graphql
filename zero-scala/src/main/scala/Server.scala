@@ -1,21 +1,22 @@
-import SchemaDefinition.FriendsResolver
+import SchemaDefinition.personFetcher
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server._
 import akka.stream.ActorMaterializer
-
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
 import sangria.parser.QueryParser
 import sangria.execution._
+import sangria.execution.deferred.DeferredResolver
 import sangria.marshalling.sprayJson._
 import sangria.schema.Schema
 
 import spray.json._
 
-import scala.util.{Success, Failure}
+import scala.util.{Failure, Success}
 
 object Server extends App {
   implicit val system = ActorSystem("sangria-server")
@@ -56,7 +57,7 @@ object Server extends App {
             operationName = operation,
             queryReducers = rejectComplexQueries :: Nil,
             exceptionHandler = exceptionHandler,
-            deferredResolver = new FriendsResolver)
+            deferredResolver = DeferredResolver.fetchers(personFetcher))
           .map(OK → _)
           .recover {
             case error: QueryAnalysisError ⇒ BadRequest → error.resolveError
