@@ -62,18 +62,3 @@ matz
 |> Ecto.build_assoc(:friendships)
 |> Friendship.changeset( %{ person_id: matz.id, friend_id: dhh.id } )
 |> Repo.insert
-
-#
-# retrieving a person
-#
-
-# person = Repo.get( Person, 1 ) => returns a person model
-# person.first_name
-# person.last_name
-
-#
-# retrieving the friendships for a person
-#
-
-# results = Repo.get( Person, 1 ) |> Repo.preload(:friendships) |> Repo.preload(friendships: [ :person, :friend ] )
-# results => returns a list of structs
