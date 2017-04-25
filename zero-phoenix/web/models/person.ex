@@ -2,7 +2,6 @@ defmodule ZeroPhoenix.Person do
   use ZeroPhoenix.Web, :model
 
   @required_fields ~w(first_name last_name username email)
-  @optional_fields ~w()
 
   schema "people" do
     field :first_name, :string
@@ -21,7 +20,7 @@ defmodule ZeroPhoenix.Person do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:first_name, :last_name, :username, :email])
-    |> validate_required([:first_name, :last_name, :username, :email])
+    |> cast(params, @required_fields)
+    |> validate_required(@required_fields)
   end
 end

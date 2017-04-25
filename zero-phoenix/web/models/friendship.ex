@@ -2,7 +2,6 @@ defmodule ZeroPhoenix.Friendship do
   use ZeroPhoenix.Web, :model
 
   @required_fields ~w(person_id friend_id)
-  @optional_fields ~w()
 
   schema "friendships" do
     belongs_to :person, ZeroPhoenix.Person
@@ -16,7 +15,7 @@ defmodule ZeroPhoenix.Friendship do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:person_id, :friend_id])
-    |> validate_required([:person_id, :friend_id])
+    |> cast(params, @required_fields)
+    |> validate_required(@required_fields)
   end
 end
