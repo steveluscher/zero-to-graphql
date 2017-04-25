@@ -6,11 +6,11 @@ The purpose of this example is to provide details as to how one would go about u
 
 ## Software requirements
 
-- [Elixir 1.3.2 or higher](http://elixir-lang.org/install.html)
+- [Elixir 1.5.0-dev or higher](http://elixir-lang.org/install.html)
 
 - [Phoenix 1.2.0 or higher](http://www.phoenixframework.org/docs/installation)
 
-- PostgreSQL 9.5.x or higher
+- PostgreSQL 9.6.x or higher
 
 ## Communication
 
@@ -288,14 +288,14 @@ The purpose of this example is to provide details as to how one would go about u
       [
         {:phoenix, "~> 1.2.0"},
         {:phoenix_pubsub, "~> 1.0"},
-        {:ecto, github: "elixir-ecto/ecto", override: true },
+        {:ecto, github: "elixir-ecto/ecto", override: true},
         {:phoenix_ecto, "~> 3.0"},
         {:postgrex, ">= 0.0.0"},
         {:phoenix_html, "~> 2.6"},
         {:phoenix_live_reload, "~> 1.0", only: :dev},
         {:gettext, "~> 0.11"},
         {:cowboy, "~> 1.0"},
-        {:absinthe_plug, "~> 1.1"}
+        {:absinthe_plug, "~> 1.3"}
      ]
     end
     ```
@@ -386,7 +386,7 @@ The purpose of this example is to provide details as to how one would go about u
     scope "/graphiql" do
       pipe_through :api
 
-      forward "/", Absinthe.Plug.GraphiQL, schema: ZeroPhoenix.Graphql.Schema
+      forward "/", Absinthe.Plug.GraphiQL, schema: ZeroPhoenix.Graphql.Schema, interface: :simple
     end
     ```
 
