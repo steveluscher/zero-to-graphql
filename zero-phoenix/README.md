@@ -145,8 +145,8 @@ The purpose of this example is to provide details as to how one would go about u
       """
       def changeset(struct, params \\ %{}) do
         struct
-        |> cast(params, [:first_name, :last_name, :username, :email])
-        |> validate_required([:first_name, :last_name, :username, :email])
+        |> cast(params, @required_fields)
+        |> validate_required(@required_fields)
       end
     end
     ```
@@ -201,8 +201,8 @@ The purpose of this example is to provide details as to how one would go about u
       """
       def changeset(struct, params \\ %{}) do
         struct
-        |> cast(params, [:person_id, :friend_id])
-        |> validate_required([:person_id, :friend_id])
+        |> cast(params, @required_fields)
+        |> validate_required(@required_fields)
       end
     end
     ```
