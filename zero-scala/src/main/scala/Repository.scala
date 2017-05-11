@@ -1,11 +1,12 @@
 import language.postfixOps
-
 import scala.concurrent.Await
 import scala.concurrent.duration._
-import slick.driver.H2Driver.api._
+import slick.jdbc.H2Profile.api._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class Person(id: String, firstName: String, lastName: String, username: String, email: String)
+
 case class Friend(personId: String, friendId: String)
 
 class Repository(db: Database) {
@@ -14,12 +15,17 @@ class Repository(db: Database) {
   def allPeople =
     db.run(People.result)
 
+  def people(ids: Seq[String]) =
+    db.run(People.filter(_.id inSet ids).result)
+
   def person(id: String) =
     db.run(People.filter(_.id === id).result.headOption)
 
   def findFriends(personIds: Seq[String]) =
     db.run(friendsQuery(personIds).result).map(result ⇒
-      result.groupBy(_._1.personId).mapValues(_.map(_._2)))
+      result.groupBy(_._2.id).toVector.map {
+        case (_, friends) ⇒ friends.map(_._1.personId) → friends.head._2
+      })
 
   def close() = db.close()
 }
