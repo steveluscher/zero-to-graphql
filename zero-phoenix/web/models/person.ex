@@ -1,7 +1,8 @@
 defmodule ZeroPhoenix.Person do
   use ZeroPhoenix.Web, :model
 
-  @required_fields ~w(first_name last_name username email)
+  @required_fields [:first_name, :last_name, :username, :email]
+  @optional_fields []
 
   schema "people" do
     field :first_name, :string
@@ -9,8 +10,8 @@ defmodule ZeroPhoenix.Person do
     field :username, :string
     field :email, :string
 
-    has_many :friendships, ZeroPhoenix.Friendship #, on_delete: :delete_all
-    has_many :friends, through: [:friendships, :friend] #, on_delete: :delete_all
+    has_many :friendships, ZeroPhoenix.Friendship
+    has_many :friends, through: [:friendships, :friend]
 
     timestamps()
   end
@@ -21,6 +22,6 @@ defmodule ZeroPhoenix.Person do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, @required_fields)
-    |> validate_required(@required_fields)
+    |> validate_required(@required_fields, @optional_fields)
   end
 end

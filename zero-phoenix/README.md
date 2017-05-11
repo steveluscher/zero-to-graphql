@@ -6,7 +6,7 @@ The purpose of this example is to provide details as to how one would go about u
 
 ## Software requirements
 
-- [Elixir 1.4.0 or higher](http://elixir-lang.org/install.html)
+- [Elixir 1.5.0 or higher](http://elixir-lang.org/install.html)
 
 - [Phoenix 1.2.0 or higher](http://www.phoenixframework.org/docs/installation)
 
@@ -43,9 +43,7 @@ The purpose of this example is to provide details as to how one would go about u
 3.  create, migrate, and seed the database
 
     ```
-    $ mix ecto.create
-    $ mix ecto.migrate
-    $ mix ecto.seed
+    $ mix ecto.setup
     ```
 
 4.  start the server
@@ -125,8 +123,8 @@ The purpose of this example is to provide details as to how one would go about u
     defmodule ZeroPhoenix.Person do
       use ZeroPhoenix.Web, :model
 
-      @required_fields ~w(first_name last_name username email)
-      @optional_fields ~w()
+      @required_fields [:first_name, :last_name, :username, :email]
+      @optional_fields []
 
       schema "people" do
         field :first_name, :string
@@ -146,7 +144,7 @@ The purpose of this example is to provide details as to how one would go about u
       def changeset(struct, params \\ %{}) do
         struct
         |> cast(params, @required_fields)
-        |> validate_required(@required_fields)
+        |> validate_required(@required_fields, @optional_fields)
       end
     end
     ```
@@ -186,8 +184,8 @@ The purpose of this example is to provide details as to how one would go about u
     defmodule ZeroPhoenix.Friendship do
       use ZeroPhoenix.Web, :model
 
-      @required_fields ~w(person_id friend_id)
-      @optional_fields ~w()
+      @required_fields [:person_id, :friend_id]
+      @optional_fields []
 
       schema "friendships" do
         belongs_to :person, ZeroPhoenix.Person
@@ -202,7 +200,7 @@ The purpose of this example is to provide details as to how one would go about u
       def changeset(struct, params \\ %{}) do
         struct
         |> cast(params, @required_fields)
-        |> validate_required(@required_fields)
+        |> validate_required(@required_fields, @optional_fields)
       end
     end
     ```
@@ -226,6 +224,7 @@ The purpose of this example is to provide details as to how one would go about u
     alias ZeroPhoenix.Friendship
 
     # reset the datastore
+    Repo.delete_all(Friendship)
     Repo.delete_all(Person)
 
     # insert people

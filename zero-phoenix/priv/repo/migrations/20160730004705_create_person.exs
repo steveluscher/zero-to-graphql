@@ -10,6 +10,5 @@ defmodule ZeroPhoenix.Repo.Migrations.CreatePerson do
 
       timestamps()
     end
-
   end
 end
