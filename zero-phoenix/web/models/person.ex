@@ -10,8 +10,8 @@ defmodule ZeroPhoenix.Person do
     field :username, :string
     field :email, :string
 
-    has_many :friendships, ZeroPhoenix.Friendship #, on_delete: :delete_all
-    has_many :friends, through: [:friendships, :friend] #, on_delete: :delete_all
+    has_many :friendships, ZeroPhoenix.Friendship
+    has_many :friends, through: [:friendships, :friend]
 
     timestamps()
   end
