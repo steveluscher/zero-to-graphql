@@ -224,6 +224,7 @@ The purpose of this example is to provide details as to how one would go about u
     alias ZeroPhoenix.Friendship
 
     # reset the datastore
+    Repo.delete_all(Friendship)
     Repo.delete_all(Person)
 
     # insert people
