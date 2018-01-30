@@ -6,7 +6,7 @@ The purpose of this example is to provide details as to how one would go about u
 
 ## Software requirements
 
-- [Elixir 1.5.0 or higher](http://elixir-lang.org/install.html)
+- [Elixir 1.6.1 or higher](http://elixir-lang.org/install.html)
 
 - [Phoenix 1.2.0 or higher](http://www.phoenixframework.org/docs/installation)
 
@@ -452,4 +452,4 @@ ZeroPhoenix is released under the [MIT license](https://mit-license.org).
 
 ## Copyright
 
-copyright:: (c) Copyright 2016 Conrad Taylor. All Rights Reserved.
+copyright:: (c) Copyright 2016 - 2018 Conrad Taylor. All Rights Reserved.
