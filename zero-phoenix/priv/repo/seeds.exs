@@ -15,6 +15,7 @@ alias ZeroPhoenix.Person
 alias ZeroPhoenix.Friendship
 
 # reset the datastore
+Repo.delete_all(Friendship)
 Repo.delete_all(Person)
 
 # insert people
