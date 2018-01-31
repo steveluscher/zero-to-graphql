@@ -13,7 +13,6 @@ config :zero_phoenix, ZeroPhoenix.Endpoint,
   check_origin: false,
   watchers: []
 
-
 # Watch static and templates for browser reloading.
 config :zero_phoenix, ZeroPhoenix.Endpoint,
   live_reload: [

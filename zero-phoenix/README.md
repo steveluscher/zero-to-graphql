@@ -303,8 +303,20 @@ The purpose of this example is to provide details as to how one would go about u
 
     ```elixir
     def application do
-      [mod: {ZeroPhoenix, []},
-       applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :absinthe_plug]]
+      [
+        mod: {ZeroPhoenix, []},
+        applications: [
+          :phoenix,
+          :phoenix_pubsub,
+          :phoenix_html,
+          :cowboy,
+          :logger,
+          :gettext,
+          :phoenix_ecto,
+          :postgrex,
+          :absinthe_plug
+        ]
+      ]
     end
     ```
 

@@ -2,15 +2,17 @@ defmodule ZeroPhoenix.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :zero_phoenix,
-     version: "0.0.1",
-     elixir: "~> 1.6.1",
-     elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     aliases: aliases(),
-     deps: deps()]
+    [
+      app: :zero_phoenix,
+      version: "0.0.1",
+      elixir: "~> 1.6.1",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application.
@@ -19,24 +21,23 @@ defmodule ZeroPhoenix.Mixfile do
   def application do
     [
       mod: {ZeroPhoenix, []},
-      applications:
-        [
-          :phoenix,
-          :phoenix_pubsub,
-          :phoenix_html,
-          :cowboy,
-          :logger,
-          :gettext,
-          :phoenix_ecto,
-          :postgrex,
-          :absinthe_plug
-        ]
+      applications: [
+        :phoenix,
+        :phoenix_pubsub,
+        :phoenix_html,
+        :cowboy,
+        :logger,
+        :gettext,
+        :phoenix_ecto,
+        :postgrex,
+        :absinthe_plug
+      ]
     ]
   end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(_), do: ["lib", "web"]
 
   # Specifies your project dependencies.
   #
@@ -53,7 +54,7 @@ defmodule ZeroPhoenix.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:absinthe_plug, git: "https://github.com/absinthe-graphql/absinthe_plug.git"}
-   ]
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
@@ -63,8 +64,10 @@ defmodule ZeroPhoenix.Mixfile do
   #
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
-    ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"],
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
   end
 end

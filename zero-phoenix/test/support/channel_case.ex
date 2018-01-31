@@ -25,7 +25,6 @@ defmodule ZeroPhoenix.ChannelCase do
       import Ecto.Changeset
       import Ecto.Query
 
-
       # The default endpoint for testing
       @endpoint ZeroPhoenix.Endpoint
     end
