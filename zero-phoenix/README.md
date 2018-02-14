@@ -198,9 +198,6 @@ The purpose of this example is to provide details as to how one would go about u
       @required_fields [:person_id, :friend_id]
 
       schema "friendships" do
-        field(:person_id, :id)
-        field(:friend_id, :id)
-
         belongs_to(:person, ZeroPhoenix.Person)
         belongs_to(:friend, ZeroPhoenix.Person)
 
