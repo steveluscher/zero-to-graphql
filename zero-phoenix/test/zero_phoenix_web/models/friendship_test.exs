@@ -1,4 +1,4 @@
-defmodule ZeroPhoenix.FriendshipTest do
+defmodule ZeroPhoenixWeb.FriendshipTest do
   use ZeroPhoenix.ModelCase
 
   alias ZeroPhoenix.Friendship
