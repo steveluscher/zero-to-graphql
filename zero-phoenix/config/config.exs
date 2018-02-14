@@ -10,10 +10,10 @@ config :zero_phoenix,
   ecto_repos: [ZeroPhoenix.Repo]
 
 # Configures the endpoint
-config :zero_phoenix, ZeroPhoenix.Endpoint,
+config :zero_phoenix, ZeroPhoenixWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "bS5peykLEJ5cQDZ+u5M+ncgdhOyKND6P/vSLoLKdqaRgGqe1QHuejc5XvfifUUUo",
-  render_errors: [view: ZeroPhoenix.ErrorView, accepts: ~w(html json)],
+  secret_key_base: "nvgjFfsHcYw2DWvEX4Rtzj4DONDO4t7+lt4alSLGPFhP58bvBoz7xVv36Co96Yl9",
+  render_errors: [view: ZeroPhoenixWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ZeroPhoenix.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
