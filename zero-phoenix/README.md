@@ -8,9 +8,9 @@ The purpose of this example is to provide details as to how one would go about u
 
 - [Elixir 1.6.1 or higher](http://elixir-lang.org/install.html)
 
-- [Phoenix 1.2.0 or higher](http://www.phoenixframework.org/docs/installation)
+- [Phoenix 1.3.0 or higher](http://www.phoenixframework.org/docs/installation)
 
-- PostgreSQL 9.6.x or higher
+- PostgreSQL 10.2.0 or higher
 
 ## Communication
 
@@ -49,7 +49,7 @@ The purpose of this example is to provide details as to how one would go about u
 4.  start the server
 
     ```
-    $ mix phoenix.server
+    $ mix phx.server
     ```
 
 5.  navigate to our application within the browser
@@ -85,7 +85,7 @@ The purpose of this example is to provide details as to how one would go about u
 1.  create the project
 
     ```
-    $ mix phoenix.new zero_phoenix --no-brunch
+    $ mix phx.new zero_phoenix --no-brunch
     ```
 
     Note:  Just answer 'Y' to all the prompts that appear.
@@ -109,47 +109,19 @@ The purpose of this example is to provide details as to how one would go about u
     config/test.exs
     ```
 
-5.  generate an API for representing our `Person` resource
+6.  create the database
 
     ```
-    $ mix phoenix.gen.json Person people first_name:string last_name:string username:string email:string
+    $ mix ecto.create
     ```
 
-6.  replace the generated `Person` model with the following:
+7.  generate an API for representing our `Person` resource
 
-    `web/models/person.ex`:
-
-    ```elixir
-    defmodule ZeroPhoenix.Person do
-      use ZeroPhoenix.Web, :model
-
-      @required_fields [:first_name, :last_name, :username, :email]
-      @optional_fields []
-
-      schema "people" do
-        field :first_name, :string
-        field :last_name, :string
-        field :username, :string
-        field :email, :string
-
-        has_many :friendships, ZeroPhoenix.Friendship
-        has_many :friends, through: [:friendships, :friend]
-
-        timestamps()
-      end
-
-      @doc """
-      Builds a changeset based on the `struct` and `params`.
-      """
-      def changeset(struct, params \\ %{}) do
-        struct
-        |> cast(params, @required_fields)
-        |> validate_required(@required_fields, @optional_fields)
-      end
-    end
+    ```
+    $ mix phx.gen.json Accounts Person people first_name:string last_name:string username:string email:string
     ```
 
-7.  add the resource to your api scope in which should look as follows after the edit:
+8. add the resource to your api scope in which should look as follows after the edit:
 
     `web/router.ex`:
 
@@ -163,49 +135,17 @@ The purpose of this example is to provide details as to how one would go about u
 
     Note:  When creating an API, one doesn't require a new or edit actions.  Thus, this is the reason that we are excluding them from this resource.
 
-8.  create and migrate the database
+9.  migrate the database
 
     ```
-    $ mix ecto.create
     $ mix ecto.migrate
     ```
 
-9.  generate a `Friendship` model which representing our join model:
+10.  generate a `Friendship` model which representing our join model:
 
     ```
-    $ mix phoenix.gen.model Friendship friendships person_id:references:people friend_id:references:people
+    $ mix phx.gen.schema Accounts.Friendship friendships person_id:references:people friend_id:references:people
     ```
-
-10. replace the generated `Friendship` model with the following:
-
-    `web/models/friendship.ex`:
-
-    ```elixir
-    defmodule ZeroPhoenix.Friendship do
-      use ZeroPhoenix.Web, :model
-
-      @required_fields [:person_id, :friend_id]
-      @optional_fields []
-
-      schema "friendships" do
-        belongs_to :person, ZeroPhoenix.Person
-        belongs_to :friend, ZeroPhoenix.Person
-
-        timestamps()
-      end
-
-      @doc """
-      Builds a changeset based on the `struct` and `params`.
-      """
-      def changeset(struct, params \\ %{}) do
-        struct
-        |> cast(params, @required_fields)
-        |> validate_required(@required_fields, @optional_fields)
-      end
-    end
-    ```
-
-    Note:  We want `friend_id` to reference the `people` table because our `friend_id` really represents a `Person` model.
 
 11. migrate the database
 
@@ -213,65 +153,156 @@ The purpose of this example is to provide details as to how one would go about u
     $ mix ecto.migrate
     ```
 
-12. create the seeds file
+12.  replace the generated `Person` model with the following:
+
+    `web/models/person.ex`:
+
+    ```elixir
+    defmodule ZeroPhoenix.Accounts.Person do
+      use Ecto.Schema
+      import Ecto.Changeset
+      alias ZeroPhoenix.Accounts.Person
+      alias ZeroPhoenix.Accounts.Friendship
+
+      schema "people" do
+        field(:email, :string)
+        field(:first_name, :string)
+        field(:last_name, :string)
+        field(:username, :string)
+
+        has_many(:friendships, Friendship)
+        has_many(:friends, through: [:friendships, :friend])
+
+        timestamps()
+      end
+
+      @doc false
+      def changeset(%Person{} = person, attrs) do
+        person
+        |> cast(attrs, [:first_name, :last_name, :username, :email])
+        |> validate_required([:first_name, :last_name, :username, :email])
+      end
+    end
+    ```
+
+13. replace the generated `Friendship` model with the following:
+
+    `web/models/friendship.ex`:
+
+    ```elixir
+    defmodule ZeroPhoenix.Accounts.Friendship do
+      use Ecto.Schema
+      import Ecto.Changeset
+      alias ZeroPhoenix.Accounts.Friendship
+
+      @required_fields [:person_id, :friend_id]
+
+      schema "friendships" do
+        field(:person_id, :id)
+        field(:friend_id, :id)
+
+        belongs_to(:person, ZeroPhoenix.Person)
+        belongs_to(:friend, ZeroPhoenix.Person)
+
+        timestamps()
+      end
+
+      @doc false
+      def changeset(%Friendship{} = friendship, attrs) do
+        friendship
+        |> cast(attrs, @required_fields)
+        |> validate_required(@required_fields)
+      end
+    end
+    ```
+
+    Note:  We want `friend_id` to reference the `people` table because our `friend_id` really represents a `Person` model.
+
+14. create the seeds file
 
     `priv/repo/seeds.exs`:
 
-
     ```
     alias ZeroPhoenix.Repo
-    alias ZeroPhoenix.Person
-    alias ZeroPhoenix.Friendship
+    alias ZeroPhoenix.Accounts.Person
+    alias ZeroPhoenix.Accounts.Friendship
 
     # reset the datastore
     Repo.delete_all(Friendship)
     Repo.delete_all(Person)
 
     # insert people
-    me = Repo.insert!(%Person{ first_name: "Steven", last_name: "Luscher", email: "steveluscher@fb.com", username: "steveluscher" })
-    dhh = Repo.insert!(%Person{ first_name: "David", last_name: "Heinemeier Hansson", email: "dhh@37signals.com", username: "dhh" })
-    ezra = Repo.insert!(%Person{ first_name: "Ezra", last_name: "Zygmuntowicz", email: "ezra@merbivore.com", username: "ezra" })
-    matz = Repo.insert!(%Person{ first_name: "Yukihiro", last_name: "Matsumoto", email: "matz@heroku.com", username: "matz" })
+    me =
+      Repo.insert!(%Person{
+        first_name: "Steven",
+        last_name: "Luscher",
+        email: "steveluscher@fb.com",
+        username: "steveluscher"
+      })
+
+    dhh =
+      Repo.insert!(%Person{
+        first_name: "David",
+        last_name: "Heinemeier Hansson",
+        email: "dhh@37signals.com",
+        username: "dhh"
+      })
+
+    ezra =
+      Repo.insert!(%Person{
+        first_name: "Ezra",
+        last_name: "Zygmuntowicz",
+        email: "ezra@merbivore.com",
+        username: "ezra"
+      })
+
+    matz =
+      Repo.insert!(%Person{
+        first_name: "Yukihiro",
+        last_name: "Matsumoto",
+        email: "matz@heroku.com",
+        username: "matz"
+      })
 
     me
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: me.id, friend_id: matz.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: me.id, friend_id: matz.id})
+    |> Repo.insert()
 
     dhh
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: dhh.id, friend_id: ezra.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: dhh.id, friend_id: ezra.id})
+    |> Repo.insert()
 
     dhh
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: dhh.id, friend_id: matz.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: dhh.id, friend_id: matz.id})
+    |> Repo.insert()
 
     ezra
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: ezra.id, friend_id: dhh.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: ezra.id, friend_id: dhh.id})
+    |> Repo.insert()
 
     ezra
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: ezra.id, friend_id: matz.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: ezra.id, friend_id: matz.id})
+    |> Repo.insert()
 
     matz
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: matz.id, friend_id: me.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: matz.id, friend_id: me.id})
+    |> Repo.insert()
 
     matz
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: matz.id, friend_id: ezra.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: matz.id, friend_id: ezra.id})
+    |> Repo.insert()
 
     matz
     |> Ecto.build_assoc(:friendships)
-    |> Friendship.changeset( %{ person_id: matz.id, friend_id: dhh.id } )
-    |> Repo.insert
+    |> Friendship.changeset(%{person_id: matz.id, friend_id: dhh.id})
+    |> Repo.insert()
     ```
 
 13. seed the database
@@ -285,37 +316,15 @@ The purpose of this example is to provide details as to how one would go about u
     ```elixir
     defp deps do
       [
-        {:phoenix, "~> 1.2.0"},
+        {:phoenix, "~> 1.3.0"},
         {:phoenix_pubsub, "~> 1.0"},
-        {:ecto, github: "elixir-ecto/ecto", override: true},
-        {:phoenix_ecto, "~> 3.0"},
+        {:phoenix_ecto, "~> 3.2"},
         {:postgrex, ">= 0.0.0"},
-        {:phoenix_html, "~> 2.6"},
+        {:phoenix_html, "~> 2.10"},
         {:phoenix_live_reload, "~> 1.0", only: :dev},
         {:gettext, "~> 0.11"},
         {:cowboy, "~> 1.0"},
         {:absinthe_plug, "~> 1.3"}
-     ]
-    end
-    ```
-
-15. Add `absinthe_plug` application to your `mix.exs` application as follows:
-
-    ```elixir
-    def application do
-      [
-        mod: {ZeroPhoenix, []},
-        applications: [
-          :phoenix,
-          :phoenix_pubsub,
-          :phoenix_html,
-          :cowboy,
-          :logger,
-          :gettext,
-          :phoenix_ecto,
-          :postgrex,
-          :absinthe_plug
-        ]
       ]
     end
     ```
@@ -328,25 +337,27 @@ The purpose of this example is to provide details as to how one would go about u
 
 17. add the GraphQL schema which represents our entry point into our GraphQL structure:
 
-    `web/graphql/schema.ex`:
+    `lib/zero_phoenix_web/graphql/schema.ex`:
 
     ```elixir
-    defmodule ZeroPhoenix.Graphql.Schema do
+    defmodule ZeroPhoenixWeb.Graphql.Schema do
       use Absinthe.Schema
 
-      import_types ZeroPhoenix.Graphql.Types.Person
+      import_types(ZeroPhoenixWeb.Graphql.Types.Person)
 
       alias ZeroPhoenix.Repo
+      alias ZeroPhoenix.Accounts.Person
 
       query do
         field :person, type: :person do
-          arg :id, non_null(:id)
-          resolve fn %{id: id}, _info ->
-            case ZeroPhoenix.Person|> Repo.get(id) do
-              nil  -> {:error, "Person id #{id} not found"}
+          arg(:id, non_null(:id))
+
+          resolve(fn %{id: id}, _info ->
+            case Person |> Repo.get(id) do
+              nil -> {:error, "Person id #{id} not found"}
               person -> {:ok, person}
             end
-          end
+          end)
         end
       end
     end
@@ -354,10 +365,10 @@ The purpose of this example is to provide details as to how one would go about u
 
 18. add our Person type which will be performing queries against:
 
-    `web/graphql/types/person.ex`:
+    `lib/zero_phoenix_web/graphql/types/person.ex`:
 
     ```elixir
-    defmodule ZeroPhoenix.Graphql.Types.Person do
+    defmodule ZeroPhoenixWeb.Graphql.Types.Person do
       use Absinthe.Schema.Notation
 
       import Ecto
@@ -404,7 +415,7 @@ The purpose of this example is to provide details as to how one would go about u
 20. start the server
 
     ```
-    $ mix phoenix.server
+    $ mix phx.server
     ```
 
 21. navigate to our application within the browser
