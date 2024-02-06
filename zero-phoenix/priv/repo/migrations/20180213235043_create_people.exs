@@ -1,4 +1,4 @@
-defmodule ZeroPhoenix.Repo.Migrations.CreatePerson do
+defmodule ZeroPhoenix.Repo.Migrations.CreatePeople do
   use Ecto.Migration
 
   def change do
@@ -10,5 +10,6 @@ defmodule ZeroPhoenix.Repo.Migrations.CreatePerson do
 
       timestamps()
     end
+
   end
 end
